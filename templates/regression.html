@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Glucose Regression - GlucoBench{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Glucose Regression</h1>
+
+    <div class="success">
+        Ridge Regression and Linear Regression trained after data cleaning, KNN imputation, scaling and one-hot encoding.
+    </div>
+
+    <div class="section">
+        <h2>Ridge Regression Performance</h2>
+        <div class="stats-grid">
+            <div class="stat-box"><h3>MAE</h3><p>{{ metrics.MAE }}</p></div>
+            <div class="stat-box"><h3>MSE</h3><p>{{ metrics.MSE }}</p></div>
+            <div class="stat-box"><h3>RMSE</h3><p>{{ metrics.RMSE }}</p></div>
+            <div class="stat-box"><h3>R² Score</h3><p>{{ metrics.R2 }}</p></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Linear Regression Performance</h2>
+        <div class="stats-grid">
+            <div class="stat-box"><h3>MAE</h3><p>{{ metrics.lr_MAE }}</p></div>
+            <div class="stat-box"><h3>MSE</h3><p>{{ metrics.lr_MSE }}</p></div>
+            <div class="stat-box"><h3>RMSE</h3><p>{{ metrics.lr_RMSE }}</p></div>
+            <div class="stat-box"><h3>R² Score</h3><p>{{ metrics.lr_R2 }}</p></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Dataset Info</h2>
+        <div class="stats-grid">
+            <div class="stat-box"><h3>Training Rows</h3><p>{{ metrics.train_rows }}</p></div>
+            <div class="stat-box"><h3>Testing Rows</h3><p>{{ metrics.test_rows }}</p></div>
+            <div class="stat-box"><h3>Original Features</h3><p>{{ metrics.features_before_encoding }}</p></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Model Comparison</h2>
+        <img src="{{ url_for('static', filename='plots/' + plot_image) }}" alt="Regression Metrics Comparison" style="width:100%; max-width:900px; display:block; margin:0 auto;">
+    </div>
+
+    <div class="section">
+        <h2>Actual vs Predicted Glucose</h2>
+        <div class="table-container">{{ results | safe }}</div>
+    </div>
+
+    <div class="section">
+        <h2>Regression Pipeline</h2>
+        <ul>
+            <li>Target: glucose</li>
+            <li>Train/test split: chronological 80/20 split</li>
+            <li>Missing numeric values: KNN imputation (k=5)</li>
+            <li>Numeric preprocessing: standardization</li>
+            <li>Categorical preprocessing: most-frequent imputation + one-hot encoding</li>
+            <li>Models: Ridge Regression (alpha=1.0) and Linear Regression</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
